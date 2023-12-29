@@ -13,7 +13,7 @@ model = genai.GenerativeModel("gemini-pro-vision")
 
 def get_gemini_pro_response(input, image, prompt):
     response = model.generate_content([input, image[0], prompt])
-    response.text
+    return response.text
 
 
 def input_image_setup(uploaded_file):
@@ -45,11 +45,11 @@ submit = st.button("Tell me about the invoice")
 if submit:
     image_data = input_image_setup(uploaded_file)
 
-    st.subheader(
-        "Response is ... ",
-    )
+    # st.subheader("Response is ... ")
 
     input_prompt = """
     We will upload image as invoice and you will answer any questions based on uploaded image
     """
-    get_gemini_pro_response(input_prompt, image_data, input)
+    with st.spinner("Hold on we are fetching result ..."):
+        result = get_gemini_pro_response(input_prompt, image_data, input)
+        st.success(result)
